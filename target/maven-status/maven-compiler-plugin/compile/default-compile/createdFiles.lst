@@ -1,0 +1,8 @@
+com/synth/webscraper/model/Product.class
+com/synth/webscraper/writer/CSVWriterImpl.class
+com/synth/webscraper/writer/CSVWriter.class
+com/synth/webscraper/WebScraper.class
+com/synth/webscraper/scraper/JSoupProductScraper.class
+com/synth/webscraper/config/ConfigLoader.class
+com/synth/webscraper/scraper/ProductScraper.class
+com/synth/webscraper/exception/ScraperException.class

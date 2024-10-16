@@ -1,0 +1,8 @@
+/Users/user/development/Cypher/Java/web-scraper/src/main/java/com/synth/webscraper/WebScraper.java
+/Users/user/development/Cypher/Java/web-scraper/src/main/java/com/synth/webscraper/config/ConfigLoader.java
+/Users/user/development/Cypher/Java/web-scraper/src/main/java/com/synth/webscraper/exception/ScraperException.java
+/Users/user/development/Cypher/Java/web-scraper/src/main/java/com/synth/webscraper/model/Product.java
+/Users/user/development/Cypher/Java/web-scraper/src/main/java/com/synth/webscraper/scraper/JSoupProductScraper.java
+/Users/user/development/Cypher/Java/web-scraper/src/main/java/com/synth/webscraper/scraper/ProductScraper.java
+/Users/user/development/Cypher/Java/web-scraper/src/main/java/com/synth/webscraper/writer/CSVWriter.java
+/Users/user/development/Cypher/Java/web-scraper/src/main/java/com/synth/webscraper/writer/CSVWriterImpl.java
