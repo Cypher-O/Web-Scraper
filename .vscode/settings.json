@@ -4,5 +4,6 @@
         "Jsoup",
         "KHTML",
         "webscraper"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

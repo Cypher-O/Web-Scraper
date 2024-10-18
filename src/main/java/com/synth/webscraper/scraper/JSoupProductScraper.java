@@ -11,10 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class JSoupProductScraper implements ProductScraper {
     private static final Logger logger = LoggerFactory.getLogger(JSoupProductScraper.class);
     private final String baseUrl;
+    private final AtomicInteger idCounter = new AtomicInteger(1);
 
     public JSoupProductScraper(String configPath) throws IOException {
         ConfigLoader config = new ConfigLoader(configPath);
@@ -24,6 +26,8 @@ public class JSoupProductScraper implements ProductScraper {
     @Override
     public Product scrapeProduct(Element productElement) throws ScraperException {
         try {
+            // int id = idCounter.getAndIncrement();
+            String id = "B00k2scrape-" + idCounter.getAndIncrement();
             String name = productElement.select("h3 a").attr("title");
             String price = productElement.select("div.product_price p.price_color").text();
             String rating = productElement.select("p.star-rating").first().className().split(" ")[1];
@@ -34,7 +38,7 @@ public class JSoupProductScraper implements ProductScraper {
             // Extract category from the URL
             String category = relativeUrl.split("/")[0].replace("-", " ");
 
-            return new Product(name, price, rating, url, availability, category);
+            return new Product(id, name, price, rating, url, availability, category);
         } catch (Exception e) {
             logger.warn("Error scraping product", e);
             return null;

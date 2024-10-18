@@ -6,5 +6,5 @@ import java.io.IOException;
 import java.util.List;
 
 public interface CSVWriter {
-    void saveToCSV(List<Product> products, String filePath) throws IOException;
+    void saveToCSV(List<Product> products) throws IOException;
 }

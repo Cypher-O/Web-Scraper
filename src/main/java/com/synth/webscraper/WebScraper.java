@@ -59,8 +59,8 @@ public class WebScraper {
                 pageNumber++;
             }
 
-            csvWriter.saveToCSV(allProducts, csvFilePath);
-            logger.info("Data has been successfully scraped and saved to {}", csvFilePath);
+            csvWriter.saveToCSV(allProducts);
+            logger.info("Data has been successfully scraped and saved to the Downloads directory as {}", csvFilePath);
         } catch (IOException e) {
             logger.error("Error occurred during web scraping", e);
         } catch (ScraperException e) {
