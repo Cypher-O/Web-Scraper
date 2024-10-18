@@ -86,8 +86,10 @@ Run the WebScraper class using maven:
 
 The scraped data will be saved in the Downloads directory as product_data.csv.
 
-The scraped data will be saved in the Downloads directory as product_data.csv.
-Contributing
+## Contributing
+
 Contributions are welcome! Please feel free to submit a Pull Request.
-License
+
+## License
+
 This project is open source and available under the MIT License.
