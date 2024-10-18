@@ -50,33 +50,7 @@ Use `Maven` to download all required dependencies:
     mvn clean install
  ```
 
-## Project Structure
-
-src/
-├── main/
-│   ├── java/
-│   │   ├── com/
-│   │   │   └── synth/
-│   │   │       ├── config/
-│   │   │       │   └── ConfigLoader.java
-│   │   │       ├── exception/
-│   │   │       │   └── ScraperException.java
-│   │   │       ├── fetcher/
-│   │   │       │   └── JSoupPageFetcher.java
-│   │   │       ├── model/
-│   │   │       │   └── Product.java
-│   │   │       ├── scraper/
-│   │   │       │   ├── JSoupProductScraper.java
-│   │   │       │   └── ProductScraper.java
-│   │   │       ├── writer/
-│   │   │       │   ├── CSVWriter.java
-│   │   │       │   └── CSVWriterImpl.java
-│   │   │       └── WebScraper.java
-│   └── resources/
-│       └── config.properties
-└── test/
-
-## Directory Details
+## Project Structure & Directory Details
 
 - **main/java/com/synth/**: Contains the main Java source code.
   - **config/**: Configuration-related classes.
@@ -100,18 +74,17 @@ src/
 
 - **test/**: This directory will contain unit tests and test resources.
   
-Configuration
-The project uses a config.properties file for configuration. Ensure this file is present in the resources directory with the following properties:
-Copyurl=<http://books.toscrape.com/>
-csvFilePath=product_data.csv
-Usage
+## Usage
+
 To run the web scraper:
 
-Compile the project using Maven:
-Copymvn clean package
+Run the WebScraper class using maven:
 
-Run the WebScraper class:
-Copyjava -cp target/webscraper-1.0-SNAPSHOT.jar com.synth.webscraper.WebScraper
+ ```sh
+    mvn exec:java -Dexec.mainClass="com.synth.webscraper.WebScraper"
+ ```
+
+The scraped data will be saved in the Downloads directory as product_data.csv.
 
 The scraped data will be saved in the Downloads directory as product_data.csv.
 Contributing
