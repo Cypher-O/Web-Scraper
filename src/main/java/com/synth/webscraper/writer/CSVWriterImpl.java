@@ -12,12 +12,15 @@ public class CSVWriterImpl implements CSVWriter {
     @Override
     public void saveToCSV(List<Product> products, String filePath) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write("Product Name,Price,Rating\n");
+            writer.write("Product Name,Price,Rating,URL,Availability,Category\n");
             for (Product product : products) {
-                writer.write(String.format("%s,%s,%s\n",
+                writer.write(String.format("%s,%s,%s,%s,%s,%s\n",
                         escapeSpecialCharacters(product.getName()),
                         escapeSpecialCharacters(product.getPrice()),
-                        escapeSpecialCharacters(product.getRating())));
+                        escapeSpecialCharacters(product.getRating()),
+                        escapeSpecialCharacters(product.getUrl()),
+                        escapeSpecialCharacters(product.getAvailability()),
+                        escapeSpecialCharacters(product.getCategory())));
             }
         }
     }

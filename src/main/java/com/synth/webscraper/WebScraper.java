@@ -35,7 +35,7 @@ public class WebScraper {
         ConfigLoader config = new ConfigLoader(configPath);
         this.url = config.getProperty("url");
         this.csvFilePath = config.getProperty("csvFilePath");
-        this.productScraper = new JSoupProductScraper();
+        this.productScraper = new JSoupProductScraper(configPath);
         this.csvWriter = new CSVWriterImpl();
     }
 
@@ -59,7 +59,8 @@ public class WebScraper {
 
     private List<Product> scrapeProducts(ExecutorService executor) throws IOException, ScraperException {
         Document document = Jsoup.connect(url).get();
-        Elements productElements = document.select(".product");
+        // Elements productElements = document.select(".product");
+        Elements productElements = document.select("article.product_pod");
         
         List<Future<Product>> futures = new ArrayList<>();
 
