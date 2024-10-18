@@ -18,8 +18,13 @@ public class JSoupPageFetcher {
                     .get();
             return doc.body();
         } catch (IOException e) {
-            logger.error("Error fetching page: " + url, e);
-            return null;
+            if (e.getMessage().contains("Status=404")) {
+                logger.warn("Page not found (404): {}", url);
+                return null;
+            } else {
+                logger.error("Error fetching page: " + url, e);
+                return null;
+            }
         }
     }
 }

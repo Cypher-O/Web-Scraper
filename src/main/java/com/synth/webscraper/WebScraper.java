@@ -1,4 +1,5 @@
 // WebScraper.java
+
 package com.synth.webscraper;
 
 import com.synth.webscraper.config.ConfigLoader;
@@ -26,14 +27,14 @@ import java.util.concurrent.TimeUnit;
 
 public class WebScraper {
     private static final Logger logger = LoggerFactory.getLogger(WebScraper.class);
-    private final String url;
+    private final String baseUrl;
     private final String csvFilePath;
     private final ProductScraper productScraper;
     private final CSVWriter csvWriter;
 
     public WebScraper(String configPath) throws IOException {
         ConfigLoader config = new ConfigLoader(configPath);
-        this.url = config.getProperty("url");
+        this.baseUrl = config.getProperty("url");
         this.csvFilePath = config.getProperty("csvFilePath");
         this.productScraper = new JSoupProductScraper(configPath);
         this.csvWriter = new CSVWriterImpl();
@@ -43,8 +44,22 @@ public class WebScraper {
         ExecutorService executor = null;
         try {
             executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-            List<Product> products = scrapeProducts(executor);
-            csvWriter.saveToCSV(products, csvFilePath);
+            List<Product> allProducts = new ArrayList<>();
+            
+            String nextPageUrl = baseUrl + "catalogue/page-1.html";
+            int pageNumber = 1;
+            
+            while (nextPageUrl != null) {
+                List<Product> pageProducts = scrapeProductsFromPage(executor, nextPageUrl);
+                allProducts.addAll(pageProducts);
+                
+                logger.info("Scraped {} products from page {}", pageProducts.size(), pageNumber);
+                
+                nextPageUrl = getNextPageUrl(nextPageUrl);
+                pageNumber++;
+            }
+
+            csvWriter.saveToCSV(allProducts, csvFilePath);
             logger.info("Data has been successfully scraped and saved to {}", csvFilePath);
         } catch (IOException e) {
             logger.error("Error occurred during web scraping", e);
@@ -57,9 +72,8 @@ public class WebScraper {
         }
     }
 
-    private List<Product> scrapeProducts(ExecutorService executor) throws IOException, ScraperException {
-        Document document = Jsoup.connect(url).get();
-        // Elements productElements = document.select(".product");
+    private List<Product> scrapeProductsFromPage(ExecutorService executor, String pageUrl) throws IOException, ScraperException {
+        Document document = Jsoup.connect(pageUrl).get();
         Elements productElements = document.select("article.product_pod");
         
         List<Future<Product>> futures = new ArrayList<>();
@@ -71,13 +85,26 @@ public class WebScraper {
         List<Product> products = new ArrayList<>();
         for (Future<Product> future : futures) {
             try {
-                products.add(future.get());
+                Product product = future.get();
+                if (product != null) {
+                    products.add(product);
+                }
             } catch (Exception e) {
                 logger.warn("Error scraping a product", e);
             }
         }
 
         return products;
+    }
+
+    private String getNextPageUrl(String currentPageUrl) throws IOException {
+        Document document = Jsoup.connect(currentPageUrl).get();
+        Element nextButton = document.selectFirst("li.next a");
+        if (nextButton != null) {
+            String relativeUrl = nextButton.attr("href");
+            return baseUrl + "catalogue/" + relativeUrl;
+        }
+        return null;
     }
 
     private void shutdownExecutor(ExecutorService executor) {
